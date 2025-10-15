@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # SignSynth — Realistic Text → Sign Language Video
 
 A production-grade, end-to-end web application that converts plain text into realistic sign-language videos using AI-powered pose generation and 3D rendering.
@@ -166,3 +167,6 @@ MIT License - see LICENSE file for details.
 
 For questions and support, please open an issue on GitHub.
 
+=======
+# SignSynth
+>>>>>>> f726aa43695563fbe8c5eb0888db5045dfe1b632
