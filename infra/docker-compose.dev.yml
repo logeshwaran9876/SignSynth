@@ -1,0 +1,106 @@
+services:
+  # Redis for Celery
+  redis:
+    image: redis:7-alpine
+    container_name: signsynth-redis-dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data_dev:/data
+    command: redis-server --appendonly yes
+    restart: unless-stopped
+
+  # PostgreSQL database
+  postgres:
+    image: postgres:15-alpine
+    container_name: signsynth-postgres-dev
+    environment:
+      POSTGRES_DB: signsynth_dev
+      POSTGRES_USER: signsynth
+      POSTGRES_PASSWORD: signsynth_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  # MinIO for S3-compatible storage
+  minio:
+    image: minio/minio:latest
+    container_name: signsynth-minio-dev
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin123
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data_dev:/data
+    command: server /data --console-address ":9001"
+    restart: unless-stopped
+
+  # Backend API (development)
+  backend:
+    build:
+      context: ../backend
+      dockerfile: Dockerfile.dev
+    container_name: signsynth-backend-dev
+    environment:
+      - DATABASE_URL=postgresql://signsynth:signsynth_password@postgres:5432/signsynth_dev
+      - REDIS_URL=redis://redis:6379
+      - STORAGE_TYPE=local
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - API_KEY=${API_KEY:-demo-api-key}
+      - DEBUG=true
+      - LOG_LEVEL=debug
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../backend:/app
+      - backend_uploads_dev:/app/uploads
+      - backend_outputs_dev:/app/outputs
+      - backend_temp_dev:/app/temp
+    depends_on:
+      - postgres
+      - redis
+      - minio
+    restart: unless-stopped
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # Worker for background processing (development)
+  worker:
+    build:
+      context: ../worker
+      dockerfile: Dockerfile.dev
+    container_name: signsynth-worker-dev
+    environment:
+      - DATABASE_URL=postgresql://signsynth:signsynth_password@postgres:5432/signsynth_dev
+      - REDIS_URL=redis://redis:6379
+      - STORAGE_TYPE=local
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - API_KEY=${API_KEY:-demo-api-key}
+      - DEBUG=true
+    volumes:
+      - ../worker:/app
+      - ../backend:/app/backend
+      - worker_uploads_dev:/app/uploads
+      - worker_outputs_dev:/app/outputs
+      - worker_temp_dev:/app/temp
+    depends_on:
+      - postgres
+      - redis
+      - minio
+      - backend
+    restart: unless-stopped
+    command: celery -A celery_app worker --loglevel=info --reload
+
+volumes:
+  redis_data_dev:
+  postgres_data_dev:
+  minio_data_dev:
+  backend_uploads_dev:
+  backend_outputs_dev:
+  backend_temp_dev:
+  worker_uploads_dev:
+  worker_outputs_dev:
+  worker_temp_dev:
