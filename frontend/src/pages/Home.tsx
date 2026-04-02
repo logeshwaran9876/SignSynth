@@ -116,34 +116,47 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="bg-gradient-to-br from-primary-600 to-primary-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6">
-              Transform Text into
-              <span className="block text-primary-200">Sign Language Videos</span>
+      <section className="relative overflow-hidden bg-gray-900 border-b border-gray-800">
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80')] bg-cover bg-center opacity-10 mix-blend-overlay"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-900/95 to-primary-900/40"></div>
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 lg:py-48">
+          <div className="text-center max-w-4xl mx-auto">
+            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 mb-8 shadow-2xl">
+              <Zap className="w-4 h-4 text-yellow-400" />
+              <span className="text-sm font-bold tracking-wide text-white uppercase">Experience The Future Of Accessibility</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black mb-8 leading-tight tracking-tight text-white drop-shadow-2xl">
+              Translate Text into
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-emerald-400 mt-2">
+                Indian Sign Language
+              </span>
             </h1>
-            <p className="text-xl md:text-2xl text-primary-100 mb-8 max-w-3xl mx-auto">
-              Create realistic, high-quality sign language videos from any text using 
-              advanced AI and 3D rendering technology.
+            <p className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed font-medium">
+              A state-of-the-art edge pipeline bridging the communication gap. Generate high-fidelity Sign Language simulations from complex text locally in your browser.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
               <button
                 onClick={() => navigate('/generate')}
-                className="btn btn-lg bg-white text-primary-600 hover:bg-primary-50"
+                className="group w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-400 hover:to-primary-500 text-white rounded-full font-bold text-lg shadow-[0_0_40px_-10px_rgba(59,130,246,0.6)] hover:shadow-[0_0_60px_-15px_rgba(59,130,246,0.8)] transition-all flex items-center justify-center scale-100 hover:scale-[1.02]"
               >
-                <Play className="w-5 h-5 mr-2" />
-                Start Creating
+                <Play className="w-5 h-5 mr-3 group-hover:animate-pulse" />
+                Start Creating Free
               </button>
               <button
                 onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })}
-                className="btn btn-lg btn-outline border-white text-white hover:bg-white hover:text-primary-600"
+                className="w-full sm:w-auto px-8 py-4 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/20 text-white rounded-full font-bold text-lg transition-all flex items-center justify-center hover:shadow-[0_0_30px_-10px_rgba(255,255,255,0.2)]"
               >
-                Try Demo
+                Try Live Demo
               </button>
             </div>
           </div>
         </div>
+        
+        {/* Decorative elements */}
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-500 to-transparent opacity-50"></div>
+        <div className="absolute top-1/4 -left-64 w-96 h-96 bg-primary-600 rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-pulse"></div>
+        <div className="absolute bottom-1/4 -right-64 w-96 h-96 bg-emerald-600 rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-pulse" style={{ animationDelay: '2s'}}></div>
       </section>
 
       {/* Demo Section */}

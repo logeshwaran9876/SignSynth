@@ -114,31 +114,33 @@ export default function Generate() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <div className="mb-12 text-center">
+          <h1 className="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 mb-4 tracking-tight">
             Generate Sign Language Video
           </h1>
-          <p className="text-gray-600">
-            Create high-quality sign language videos from text using AI-powered pose generation
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto font-medium">
+            Create high-quality, localized sign language videos from text using our proprietary on-device AI synthesis engine.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Input Form */}
-          <div className="space-y-6">
-            <div className="card">
-              <div className="card-header">
-                <h2 className="card-title flex items-center">
-                  <Video className="w-5 h-5 mr-2" />
+          <div className="space-y-8">
+            <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+              <div className="bg-gray-50/80 backdrop-blur-sm border-b border-gray-100 px-8 py-6">
+                <h2 className="text-xl font-bold flex items-center text-gray-900">
+                  <div className="p-2 bg-primary-100 text-primary-600 rounded-lg mr-3">
+                    <Video className="w-5 h-5" />
+                  </div>
                   Video Generation
                 </h2>
-                <p className="card-description">
-                  Enter your text and configure the video settings
+                <p className="text-sm text-gray-500 mt-2 font-medium">
+                  Enter your text and configure the synthesis pipeline settings below.
                 </p>
               </div>
-              <div className="card-content">
+              <div className="p-8 bg-white">
                 <TextInput
                   onSubmit={handleVideoSubmit}
                   isLoading={isGeneratingVideo}

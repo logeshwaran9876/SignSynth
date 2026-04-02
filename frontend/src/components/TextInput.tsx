@@ -70,7 +70,13 @@ export default function TextInput({
     // Note: The previous TS2304 error for SpeechRecognition should be resolved
     // by your local `npm install -D @types/dom-speech-recognition`
     if (typeof window !== 'undefined' && ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window)) {
-      
+      // Require a secure context for microphone access in many browsers
+      if (!window.isSecureContext) {
+        console.warn('Speech recognition requires a secure context (HTTPS or localhost).')
+        setIsSupported(false)
+        return
+      }
+
       // Use the standard or webkit-prefixed version
       const SR = (window.SpeechRecognition || window.webkitSpeechRecognition);
 
@@ -101,8 +107,25 @@ export default function TextInput({
       
       // FIX TS7006: Explicitly type the event object as SpeechRecognitionErrorEvent
       recognitionInstance.onerror = (event: SpeechRecognitionErrorEvent) => {
+        // 'no-speech' is a harmless error that occurs when the microphone hears silence. 
+        // We shouldn't show a scary red error toast for it.
+        if (event.error === 'no-speech') {
+          console.log('Speech recognition: no speech detected (silence timeout).')
+          setIsRecording(false)
+          return
+        }
+
         console.error('Speech recognition error:', event.error)
-        toast.error('Speech recognition failed', { id: 'speech' })
+
+        // Provide clearer guidance when permission is denied or blocked
+        if (event.error === 'not-allowed' || (event.error as string) === 'permission-denied' || (event.error as string) === 'security') {
+          toast.error('Microphone access denied. Allow microphone in browser settings.', { id: 'speech' })
+          // mark unsupported to hide the voice button until user fixes permissions
+          setIsSupported(false)
+        } else {
+          toast.error(`Speech recognition failed: ${event.error}`, { id: 'speech' })
+        }
+
         setIsRecording(false)
       }
       
@@ -121,7 +144,12 @@ export default function TextInput({
     if (isRecording) {
       recognition.stop()
     } else {
-      recognition.start()
+      try {
+        recognition.start()
+      } catch (err) {
+        console.error('Failed to start speech recognition', err)
+        toast.error('Unable to start voice input. Check microphone permissions and try again.', { id: 'speech' })
+      }
     }
   }
 
@@ -166,7 +194,22 @@ export default function TextInput({
         <div className="relative">
           <textarea
             {...register('text')}
-            ref={textareaRef}
+            onChange={(e) => {
+              // Let hook form handle change
+              register('text').onChange(e).then();
+              // Auto-resize textarea
+              if (textareaRef.current) {
+                textareaRef.current.style.height = 'auto';
+                if (textareaRef.current.scrollHeight > 0) {
+                  textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+                }
+              }
+            }}
+            ref={(e) => {
+              register('text').ref(e);
+              // @ts-ignore
+              textareaRef.current = e;
+            }}
             id="text"
             rows={4}
             className={`input resize-none ${

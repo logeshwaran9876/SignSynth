@@ -153,16 +153,18 @@ export default function JobCard({
 
         {/* Progress bar */}
         {isProcessing && (
-          <div className="mb-4">
-            <div className="flex justify-between text-sm text-gray-600 mb-1">
-              <span>Progress</span>
-              <span>{job.progress}%</span>
+          <div className="mb-4 mt-2">
+            <div className="flex items-end justify-between mb-2">
+              <span className="font-bold text-gray-700 uppercase tracking-wider text-xs">AI Render Engine</span>
+              <span className="text-2xl font-black text-primary-600 tracking-tighter shadow-sm">{Math.round(job.progress)}%</span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-100 rounded-full h-6 shadow-inner overflow-hidden border border-gray-200 relative">
               <div 
-                className="bg-primary-600 h-2 rounded-full transition-all duration-300"
+                className="bg-gradient-to-r from-blue-500 via-primary-500 to-purple-500 h-full rounded-full transition-all duration-500 ease-out relative"
                 style={{ width: `${job.progress}%` }}
-              />
+              >
+                <div className="absolute inset-0 bg-white/20 w-full animate-pulse"></div>
+              </div>
             </div>
           </div>
         )}

@@ -3,10 +3,14 @@ Configuration management for SignSynth application.
 Uses Pydantic Settings for environment variable handling.
 """
 
+from pathlib import Path
 from typing import List, Optional
 from pydantic_settings import BaseSettings
 from pydantic import Field, validator
-import os
+
+
+BASE_DIR = Path(__file__).resolve().parents[1]
+ENV_FILE = BASE_DIR / ".env"
 
 
 class Settings(BaseSettings):
@@ -45,13 +49,8 @@ class Settings(BaseSettings):
     
     # Security
     JWT_SECRET_KEY: str = Field(default="your-secret-key-change-in-production", env="JWT_SECRET_KEY")
-    CORS_ORIGINS: List[str] = Field(
-        default=[
-            "http://localhost:3000", 
-            "http://127.0.0.1:3000",
-            "http://localhost:5173",
-            "http://127.0.0.1:5173"
-        ],
+    CORS_ORIGINS: str = Field(
+        default="http://localhost:3000,http://127.0.0.1:3000,http://localhost:5173,http://127.0.0.1:5173",
         env="CORS_ORIGINS"
     )
     
@@ -71,12 +70,18 @@ class Settings(BaseSettings):
     OUTPUT_DIR: str = Field(default="./outputs", env="OUTPUT_DIR")
     TEMP_DIR: str = Field(default="./temp", env="TEMP_DIR")
     
-    @validator("CORS_ORIGINS", pre=True)
-    def parse_cors_origins(cls, v):
+    @validator("DEBUG", pre=True)
+    def parse_debug(cls, v):
         if isinstance(v, str):
-            return [origin.strip() for origin in v.split(",")]
+            normalized = v.strip().lower()
+            true_values = {"true", "1", "yes", "on"}
+            false_values = {"false", "0", "no", "off", "release"}
+            if normalized in true_values:
+                return True
+            if normalized in false_values:
+                return False
         return v
-    
+
     @validator("LOG_LEVEL")
     def validate_log_level(cls, v):
         valid_levels = ["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"]
@@ -90,6 +95,13 @@ class Settings(BaseSettings):
         if v.lower() not in valid_types:
             raise ValueError(f"STORAGE_TYPE must be one of {valid_types}")
         return v.lower()
+
+    @property
+    def allowed_cors_origins(self) -> List[str]:
+        """Return configured CORS origins as a list."""
+        if not self.CORS_ORIGINS:
+            return []
+        return [origin.strip() for origin in self.CORS_ORIGINS.split(",") if origin.strip()]
     
     @validator("DEFAULT_RENDER_QUALITY")
     def validate_render_quality(cls, v):
@@ -99,7 +111,8 @@ class Settings(BaseSettings):
         return v.lower()
     
     class Config:
-        env_file = ".env"
+        env_file = str(ENV_FILE)
+        env_file_encoding = "utf-8"
         case_sensitive = True
 
 

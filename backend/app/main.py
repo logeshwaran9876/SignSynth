@@ -85,7 +85,7 @@ def create_app() -> FastAPI:
         allow_origins = ["*"]
     else:
         # In production, use configured origins
-        allow_origins = settings.CORS_ORIGINS
+        allow_origins = settings.allowed_cors_origins
 
     # Log the effective CORS origins for troubleshooting
     logger.info("CORS origins", origins=allow_origins, debug_mode=settings.DEBUG)

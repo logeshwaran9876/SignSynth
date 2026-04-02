@@ -187,41 +187,41 @@ export default function Dashboard() {
         </div>
 
         {/* Statistics */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
-          <div className="card">
-            <div className="card-content text-center">
-              <div className="text-2xl font-bold text-gray-900">{stats.total}</div>
-              <div className="text-sm text-gray-500">Total Jobs</div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
+          <div className="bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl p-6 shadow-xl border border-gray-700 hover:-translate-y-1 transition-transform">
+            <div className="text-center text-white">
+              <div className="text-3xl font-black mb-1">{stats.total}</div>
+              <div className="text-xs font-semibold uppercase tracking-widest text-gray-400">Total Jobs</div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-content text-center">
-              <div className="text-2xl font-bold text-yellow-600">{stats.queued}</div>
-              <div className="text-sm text-gray-500">Queued</div>
+          <div className="bg-gradient-to-br from-yellow-50 to-amber-100 rounded-2xl p-6 shadow-lg border border-yellow-200 hover:-translate-y-1 transition-transform">
+            <div className="text-center">
+              <div className="text-3xl font-black text-amber-700 mb-1 shadow-sm">{stats.queued}</div>
+              <div className="text-xs font-bold uppercase tracking-widest text-amber-600/70">Queued</div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-content text-center">
-              <div className="text-2xl font-bold text-blue-600">{stats.processing}</div>
-              <div className="text-sm text-gray-500">Processing</div>
+          <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-6 shadow-lg border border-blue-200 hover:-translate-y-1 transition-transform">
+            <div className="text-center">
+              <div className="text-3xl font-black text-blue-700 mb-1 shadow-sm">{stats.processing}</div>
+              <div className="text-xs font-bold uppercase tracking-widest text-blue-600/70">Processing</div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-content text-center">
-              <div className="text-2xl font-bold text-green-600">{stats.succeeded}</div>
-              <div className="text-sm text-gray-500">Completed</div>
+          <div className="bg-gradient-to-br from-emerald-50 to-teal-100 rounded-2xl p-6 shadow-lg border border-emerald-200 hover:-translate-y-1 transition-transform">
+            <div className="text-center">
+              <div className="text-3xl font-black text-emerald-700 mb-1 shadow-sm">{stats.succeeded}</div>
+              <div className="text-xs font-bold uppercase tracking-widest text-emerald-600/70">Completed</div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-content text-center">
-              <div className="text-2xl font-bold text-red-600">{stats.failed}</div>
-              <div className="text-sm text-gray-500">Failed</div>
+          <div className="bg-gradient-to-br from-red-50 to-rose-100 rounded-2xl p-6 shadow-lg border border-red-200 hover:-translate-y-1 transition-transform">
+            <div className="text-center">
+              <div className="text-3xl font-black text-red-700 mb-1 shadow-sm">{stats.failed}</div>
+              <div className="text-xs font-bold uppercase tracking-widest text-red-600/70">Failed</div>
             </div>
           </div>
-          <div className="card">
-            <div className="card-content text-center">
-              <div className="text-2xl font-bold text-gray-600">{stats.cancelled}</div>
-              <div className="text-sm text-gray-500">Cancelled</div>
+          <div className="bg-gradient-to-br from-gray-100 to-gray-200 rounded-2xl p-6 shadow-lg border border-gray-300 hover:-translate-y-1 transition-transform">
+            <div className="text-center">
+              <div className="text-3xl font-black text-gray-600 mb-1 shadow-sm">{stats.cancelled}</div>
+              <div className="text-xs font-bold uppercase tracking-widest text-gray-500/70">Cancelled</div>
             </div>
           </div>
         </div>

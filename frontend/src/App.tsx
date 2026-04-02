@@ -6,6 +6,8 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Generate from './pages/Generate'
 import JobStatus from './pages/JobStatus'
+import About from './pages/About'
+import Research from './pages/Research'
 import Dashboard from './pages/Dashboard'
 import { Toaster } from 'react-hot-toast'
 
@@ -30,6 +32,8 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/research" element={<Research />} />
           <Route path="/generate" element={<Generate />} />
           <Route path="/jobs/:jobId" element={<JobStatus />} />
           <Route path="/dashboard" element={<Dashboard />} />

@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+structlog
+python-multipart
+python-jose
+passlib[bcrypt]
+sqlalchemy
+asyncpg
+websockets
